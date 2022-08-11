@@ -45,8 +45,6 @@ public class MockDNSServer {
       serverSocket.close();
     } catch (Exception ignore) {}
     running = false;
-    thread.interrupt();
-    thread = null;
   }
 
   public int getPort() {
