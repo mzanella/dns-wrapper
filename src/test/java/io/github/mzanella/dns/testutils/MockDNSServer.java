@@ -81,7 +81,9 @@ public class MockDNSServer {
       if (timeout != null) {
         Thread.sleep(timeout.toMillis());
       }
-    } catch (Exception e) {}
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
 
     byte[] resp = message.toWire();
     DatagramPacket outdp = new DatagramPacket(resp, resp.length, indp.getAddress(), indp.getPort());

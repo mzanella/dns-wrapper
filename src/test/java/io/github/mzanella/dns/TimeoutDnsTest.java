@@ -6,22 +6,33 @@ import io.github.mzanella.dns.testutils.MockDNSServer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.net.UnknownHostException;
 import java.time.Duration;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TimeoutDnsTest extends DnsTestBase {
+class TimeoutDnsTest {
 
-  @BeforeAll
-  public static void setup() throws IOException {
+  private MockDNSServer mockDNSServer;
+
+  @BeforeEach
+  public void setup() throws IOException {
     mockDNSServer = new MockDNSServer(Duration.ofMillis(1000));
     mockDNSServer.start();
   }
 
-  private static DnsResolver getDnsResolver(Duration timeout) {
+  @AfterEach
+  public void cleanup() throws UnknownHostException {
+    mockDNSServer.stop();
+  }
+
+  private DnsResolver getDnsResolver(Duration timeout) {
     return new DnsResolver.Builder()
         .withDnsAddress(Collections.singletonList(new InetSocketAddress("127.0.0.1", mockDNSServer.getPort())))
         .withTimeout(timeout)
