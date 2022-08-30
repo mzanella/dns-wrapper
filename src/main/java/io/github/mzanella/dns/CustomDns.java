@@ -29,6 +29,9 @@ import org.xbill.DNS.lookup.NoSuchDomainException;
 import org.xbill.DNS.lookup.NoSuchRRSetException;
 import org.xbill.DNS.lookup.ServerFailedException;
 
+/**
+ * Resolver that allows to specify the DNS server to use
+ */
 class CustomDns implements DnsResolver {
 
   private final ExtendedResolver resolver;

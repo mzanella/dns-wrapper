@@ -8,6 +8,30 @@
   <artifactId>dns-wrapper</artifactId>
   <version>1.0-SNAPSHOT</version>
 
+  <name>DNS wrapper</name>
+  <description>Java utility to resolve different server name using different rules and DNS servers</description>
+  <url>https://github.com/mzanella/dns-wrapper</url>
+
+  <licenses>
+    <license>
+      <name>The Apache License, Version 2.0</name>
+      <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+      <name>Marco Zanella</name>
+      <email>zanellamarco@hotmail.com</email>
+    </developer>
+  </developers>
+
+  <scm>
+    <connection>scm:git:git://github.com/mzanella/dns-wrapper.git</connection>
+    <developerConnection>scm:git:ssh://github.com:mzanella/dns-wrapper.git</developerConnection>
+    <url>https://github.com/mzanella/dns-wrapper/tree/master</url>
+  </scm>
+
   <properties>
     <maven.compiler.source>11</maven.compiler.source>
     <maven.compiler.target>11</maven.compiler.target>
@@ -37,8 +61,6 @@
       <version>5.9.0</version>
       <scope>test</scope>
     </dependency>
-
-
   </dependencies>
 
   <build>

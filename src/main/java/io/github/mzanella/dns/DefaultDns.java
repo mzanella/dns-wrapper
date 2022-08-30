@@ -6,6 +6,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * System DNS class wrapper
+ */
 class DefaultDns implements DnsResolver {
 
   public static final DefaultDns SYSTEM = new DefaultDns();

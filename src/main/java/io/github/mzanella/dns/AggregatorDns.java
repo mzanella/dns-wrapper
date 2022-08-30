@@ -8,6 +8,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * DnsResolver aggregator. Only delegates the resolution to specified resolvers.
+ */
 class AggregatorDns implements DnsResolver {
 
   private final List<DnsResolver> resolvers;

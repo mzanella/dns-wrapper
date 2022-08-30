@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * Resolver that delegates resolution to the given resolver and keep track of the results
+ */
 class CachedDns implements DnsResolver {
 
   private static final Integer DEFAULT_MAX_SIZE = 100000;
