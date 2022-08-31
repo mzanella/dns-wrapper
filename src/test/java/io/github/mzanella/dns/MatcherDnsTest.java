@@ -7,16 +7,16 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MatcherDnsTest extends DnsTestBase {
 
-  private static DnsResolver matcherDns;
+  private DnsResolver matcherDns;
 
-  @BeforeAll
-  public static void setup() throws IOException {
-    DnsTestBase.setup();
+  @BeforeEach
+  public void setup() throws IOException {
+    super.setup();
     matcherDns = new DnsResolver.Builder()
         .withMatchesOnDns(
             s -> !s.startsWith("not-a-match"),

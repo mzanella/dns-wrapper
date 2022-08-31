@@ -9,15 +9,16 @@ import java.util.Collections;
 import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class CachedDnsTest extends DnsTestBase {
 
-  private static DnsResolver cachedDns;
+  private DnsResolver cachedDns;
 
-  @BeforeAll
-  public static void setup() throws IOException {
-    DnsTestBase.setup();
+  @BeforeEach
+  public void setup() throws IOException {
+    super.setup();
     cachedDns = new DnsResolver.Builder()
         .withDnsAddress(Collections.singletonList(new InetSocketAddress("127.0.0.1", mockDNSServer.getPort())))
         .withCache(Duration.ofMinutes(30), 10, true)
