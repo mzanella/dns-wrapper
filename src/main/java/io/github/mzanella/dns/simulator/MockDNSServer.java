@@ -53,7 +53,7 @@ public class MockDNSServer extends Thread {
       }
       serve();
     } catch (SocketException e){
-      if(socket != null && !socket.isClosed()) {
+      if(!socket.isClosed()) {
         throw new RuntimeException(e);
       }
     } catch (Exception e) {
@@ -77,6 +77,10 @@ public class MockDNSServer extends Thread {
 
   public int getRequestCount() {
     return requestCount.get();
+  }
+
+  public void resetCount() {
+    requestCount.set(0);
   }
   private void serve() throws IOException {
     socket = new DatagramSocket(port);

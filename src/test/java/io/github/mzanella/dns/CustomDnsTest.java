@@ -6,17 +6,18 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class CustomDnsTest extends DnsTestBase {
 
-  private DnsResolver customDns;
+  private static DnsResolver customDns;
 
-  @BeforeEach
-  public void setup() throws IOException {
-    super.setup();
+  @BeforeAll
+  public static void setup() throws IOException {
+    DnsTestBase.setup();
     customDns = new DnsResolver.Builder()
         .withDnsAddress(Collections.singletonList(new InetSocketAddress("127.0.0.1", mockDNSServer.getPort())))
         .build();

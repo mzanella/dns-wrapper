@@ -6,17 +6,18 @@ import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 class AggregatorDnsTest extends DnsTestBase {
 
-  private AggregatorDns aggregatorDns;
+  private static AggregatorDns aggregatorDns;
 
-  @BeforeEach
-  public void setup() throws IOException {
-    super.setup();
+  @BeforeAll
+  public static void setup() throws IOException {
+    DnsTestBase.setup();
     aggregatorDns = new AggregatorDns(
         hostname -> {throw new UnknownHostException(hostname);},
         hostname -> {throw new UnknownHostException(hostname);},
