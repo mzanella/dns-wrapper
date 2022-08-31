@@ -25,6 +25,10 @@ class AggregatorDns implements DnsResolver {
 
   @Override
   public List<InetAddress> resolve(String hostname) throws UnknownHostException {
+    if (hostname == null) {
+      throw new UnknownHostException("null");
+    }
+
     List<InetAddress> collect = resolvers.stream()
         .map(resolver -> Try.of(() -> resolver.resolve(hostname)))
         .filter(Try::isSuccess)

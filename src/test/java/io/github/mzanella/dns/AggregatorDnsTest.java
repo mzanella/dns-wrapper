@@ -1,30 +1,45 @@
 package io.github.mzanella.dns;
 
+import io.github.mzanella.dns.testutils.DnsResolverDelegator;
+import io.github.mzanella.dns.testutils.DnsSimulatorTestContainer;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
-class AggregatorDnsTest extends DnsTestBase {
+@Testcontainers
+class AggregatorDnsTest {
 
-  private static AggregatorDns aggregatorDns;
+  @Container
+  public static DnsSimulatorTestContainer dnsServer = new DnsSimulatorTestContainer.Builder().build();
 
-  @BeforeAll
-  public static void setup() throws IOException {
-    DnsTestBase.setup();
+  private AggregatorDns aggregatorDns;
+  private DnsResolverDelegator delegator1;
+  private DnsResolverDelegator delegator2;
+
+  @BeforeEach
+  public void setup() throws IOException {
+
+    delegator1 = new DnsResolverDelegator(new CustomDns(
+        null, Collections.singletonList(new InetSocketAddress(dnsServer.getIp(), dnsServer.getPort())), null
+    ));
+    delegator2 = new DnsResolverDelegator(new CustomDns(
+        null, Collections.singletonList(new InetSocketAddress(dnsServer.getIp(), dnsServer.getPort())), null
+    ));
     aggregatorDns = new AggregatorDns(
         hostname -> {throw new UnknownHostException(hostname);},
         hostname -> {throw new UnknownHostException(hostname);},
         hostname -> Collections.emptyList(),
         hostname -> Collections.emptyList(),
-        new CustomDns(null, Collections.singletonList(new InetSocketAddress("127.0.0.1", mockDNSServer.getPort())), null),
-        new CustomDns(null, Collections.singletonList(new InetSocketAddress("127.0.0.1", mockDNSServer.getPort())), null),
+        delegator1,
+        delegator2,
         hostname -> {throw new RuntimeException();}
     );
   }
@@ -35,7 +50,8 @@ class AggregatorDnsTest extends DnsTestBase {
         UnknownHostException.class,
         () -> aggregatorDns.resolve("reallyreallyrandostuff_kmsdngmdsvnmdnbdvmdnvmdns")
     );
-    Assertions.assertEquals(2, mockDNSServer.getRequestCount());
+    Assertions.assertEquals(1, delegator1.getCounter());
+    Assertions.assertEquals(1, delegator2.getCounter());
   }
 
   @Test
@@ -44,13 +60,15 @@ class AggregatorDnsTest extends DnsTestBase {
         UnknownHostException.class,
         () -> aggregatorDns.resolve(null)
     );
-    Assertions.assertEquals(0, mockDNSServer.getRequestCount());
+    Assertions.assertEquals(0, delegator1.getCounter());
+    Assertions.assertEquals(0, delegator2.getCounter());
   }
 
   @Test
   public void test() throws UnknownHostException {
     List<InetAddress> resolve = aggregatorDns.resolve("github.com");
     Assertions.assertFalse(resolve.isEmpty());
-    Assertions.assertEquals(2, mockDNSServer.getRequestCount());
+    Assertions.assertEquals(1, delegator1.getCounter());
+    Assertions.assertEquals(1, delegator2.getCounter());
   }
 }

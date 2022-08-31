@@ -191,9 +191,10 @@ public interface DnsResolver {
           }
         }
 
-        if (cacheConfig != null) {
-          resolver = new CachedDns(resolver, cacheConfig);
-        }
+      }
+
+      if (cacheConfig != null) {
+        resolver = new CachedDns(resolver, cacheConfig);
       }
 
       return resolver;
