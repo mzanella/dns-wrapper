@@ -1,5 +1,6 @@
-package io.github.mzanella.dns.testutils;
+package io.github.mzanella.dns;
 
+import io.github.mzanella.dns.simulator.MockDNSServer;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import org.junit.jupiter.api.AfterAll;
@@ -9,7 +10,7 @@ import org.junit.jupiter.api.BeforeAll;
 public class DnsTestBase {
   protected static MockDNSServer mockDNSServer;
 
-  @BeforeAll
+//  @BeforeAll
   public static void setup() throws IOException {
     mockDNSServer = new MockDNSServer();
     mockDNSServer.start();
@@ -21,7 +22,8 @@ public class DnsTestBase {
   }
 
   @AfterAll
-  public static void cleanup() throws UnknownHostException {
-    mockDNSServer.stop();
+  public static void cleanup() throws UnknownHostException, InterruptedException {
+    mockDNSServer.close();
+    mockDNSServer.join();
   }
 }

@@ -1,6 +1,5 @@
 package io.github.mzanella.dns;
 
-import io.github.mzanella.dns.testutils.DnsTestBase;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
